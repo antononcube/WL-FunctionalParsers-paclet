@@ -1,0 +1,1023 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     40527,       1015]
+NotebookOptionsPosition[     34695,        892]
+NotebookOutlinePosition[     35234,        910]
+CellTagsIndexPosition[     35191,        907]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Functional parsers", "GuideTitle",
+ CellID->668608619,ExpressionUUID->"04fa29f5-31bc-4e5c-955b-90ad7d98c327"],
+
+Cell["\<\
+Functional parsers can be broken into the categories: elementary, \
+combinators, and transformers. Additional categories are introduced for \
+natural subgroups.\
+\>", "GuideAbstract",
+ CellChangeTimes->{{3.8914001193354473`*^9, 3.8914002670701857`*^9}, {
+  3.891400391318656*^9, 3.891400407201272*^9}},
+ CellID->1670618429,ExpressionUUID->"336ccba4-9ce2-4a61-b43e-fc64882ba10c"],
+
+Cell["\<\
+Separate classes of functions are those for parser inspection and parser \
+generation.\
+\>", "GuideAbstract",
+ CellChangeTimes->{{3.89140026853519*^9, 3.891400339037373*^9}},
+ CellID->1225029763,ExpressionUUID->"858243e7-307d-462e-b589-5b778f016433"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["", "GuideFunctionsSection",
+ CellID->1882735325,ExpressionUUID->"5ac9113b-e7f3-4751-b903-091b804a8d97"],
+
+Cell[CellGroupData[{
+
+Cell["Elementary parsers", "GuideFunctionsSubsection",
+ CellChangeTimes->{{3.891398651385079*^9, 3.891398654569256*^9}},
+ CellID->1746551114,ExpressionUUID->"a66f655d-3f5d-4515-94d5-b60466b373fe"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  ButtonBox["ParseEpsilon",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseEpsilon"]], 
+  "InlineFormula",ExpressionUUID->"2b7fe63f-af34-4132-bb2c-ac51cc851ac6"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseFail",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseFail"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"8623ed43-e4b5-42b7-b4ef-d49961cd4b62",ExpressionUUID->
+  "97c7fce6-7993-4a84-9f95-0251cf8ad2b0"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseSucceed",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseSucceed"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"268ed2cb-d753-41b0-a322-bdaa5c434de9",ExpressionUUID->
+  "837283f4-0eac-4c10-ab26-8b941c705b5c"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseSymbol",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseSymbol"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"11d626a3-1feb-4fe1-8823-b5d63ff9fab6",ExpressionUUID->
+  "101203bc-afb9-4326-b650-2dfec8fd1c4a"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParsePredicate",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParsePredicate"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"ea7aacbb-88d1-43c9-92b4-e575caff1c78",ExpressionUUID->
+  "740b10c3-dd27-4cce-b3c5-a128edc8614d"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseToken",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseToken"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"d2faa4a5-59aa-4f65-a316-f9e15f93927e",ExpressionUUID->
+  "8e8b6f52-bcf3-4973-aec9-9debc571805c"],
+ Cell[BoxData[
+  RowBox[{
+  Cell[TextData[StyleBox[
+   " \[FilledVerySmallSquare] ", "InlineSeparator"]],ExpressionUUID->
+    "e63146c3-4f0c-49ac-ab9e-eda51bba6274"], 
+   DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
+    "a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b", 
+     "6b18381c-3869-450d-9c9a-2cbf5c5729d0"], $CellContext`cellobj$$ = 
+    CellObject[
+    "84608a85-e1ac-4139-866e-ae4fb9281483", 
+     "5691b0d3-1dce-4d2e-a9a5-2b2fc13c125d"]}, 
+    TemplateBox[{
+      GraphicsBox[{{
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         CircleBox[{0, 0}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{0, 0.62}, {0, -0.62}}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{-0.62, 0}, {0.62, 0}}]}}, 
+       ImagePadding -> {{1., 1.}, {2.4, 1.}}, ImageSize -> 16, 
+       PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}}, 
+       BaselinePosition -> (Center -> 
+        Center)], $CellContext`nbobj$$, $CellContext`cellobj$$},
+     "InlineListingAddButton"],
+    Initialization:>($CellContext`nbobj$$ = 
+      EvaluationNotebook[]; $CellContext`cellobj$$ = EvaluationCell[])]}]], 
+  "InlineListingAddButton",ExpressionUUID->
+  "84608a85-e1ac-4139-866e-ae4fb9281483"]
+}], "InlineGuideFunctionListing",
+ CellChangeTimes->{{3.89139874797976*^9, 3.891398780966879*^9}, {
+  3.891400022227377*^9, 3.89140002632229*^9}, {3.8914004579565573`*^9, 
+  3.891400485868538*^9}},
+ CellID->576447691,ExpressionUUID->"75ab0658-790c-42da-9e8d-3279a15d4b4c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Parser combinators", "GuideFunctionsSubsection",
+ CellChangeTimes->{{3.891398658517621*^9, 3.891398662343422*^9}},
+ CellID->1650680871,ExpressionUUID->"cef99f79-05f0-4b6b-a103-92d449d3c043"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  ButtonBox["ParseAlternativeComposition",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/ParseAlternativeComposition"]],
+   "InlineGuideFunction",ExpressionUUID->
+  "57da7c76-e489-49af-8037-a582e0af4f40"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseSequentialComposition",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/ParseSequentialComposition"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"cb0dd34c-5099-4bf1-a904-5ad2ab3e7070",ExpressionUUID->
+  "db9d928e-c033-41b0-9e9d-22a492a599d5"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseSequentialCompositionPickLeft",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/\
+ParseSequentialCompositionPickLeft"]], "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"be224fcd-b852-4581-9591-0b06ea78ce3a",ExpressionUUID->
+  "e5878e76-59d1-409b-bbca-23d6766b9e15"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseSequentialCompositionPickRight",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/\
+ParseSequentialCompositionPickRight"]], "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"91e5ae9f-c4aa-4ed9-a11b-ea9c5412c1fa",ExpressionUUID->
+  "7ea71113-1ef3-42b7-a888-0dbafdd236ce"],
+ Cell[BoxData[
+  RowBox[{
+  Cell[TextData[StyleBox[
+   " \[FilledVerySmallSquare] ", "InlineSeparator"]],ExpressionUUID->
+    "a66e6f49-49dd-4378-b696-85f975d5eae6"], 
+   DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
+    "a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b", 
+     "6b18381c-3869-450d-9c9a-2cbf5c5729d0"], $CellContext`cellobj$$ = 
+    CellObject[
+    "c990d835-6320-4ad1-9f22-0fa470fdc805", 
+     "f3c700bb-041c-4e01-9e07-9c28697c71ef"]}, 
+    TemplateBox[{
+      GraphicsBox[{{
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         CircleBox[{0, 0}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{0, 0.62}, {0, -0.62}}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{-0.62, 0}, {0.62, 0}}]}}, 
+       ImagePadding -> {{1., 1.}, {2.4, 1.}}, ImageSize -> 16, 
+       PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}}, 
+       BaselinePosition -> (Center -> 
+        Center)], $CellContext`nbobj$$, $CellContext`cellobj$$},
+     "InlineListingAddButton"],
+    Initialization:>($CellContext`nbobj$$ = 
+      EvaluationNotebook[]; $CellContext`cellobj$$ = EvaluationCell[])]}]], 
+  "InlineListingAddButton",ExpressionUUID->
+  "c990d835-6320-4ad1-9f22-0fa470fdc805"]
+}], "InlineGuideFunctionListing",
+ CellChangeTimes->{{3.891398787039401*^9, 3.891398790211276*^9}, {
+  3.891398912771105*^9, 3.891398951559658*^9}, {3.891399907001422*^9, 
+  3.891399911747175*^9}, {3.891400490591032*^9, 3.891400504992269*^9}},
+ CellID->1416141062,ExpressionUUID->"487912f7-0542-4146-97cd-bf0846c66e84"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\t", "GuideDelimiter",
+ CellID->1238565210,ExpressionUUID->"9b3bfa0f-7018-4c5c-924c-2e5f3a01c403"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  ButtonBox["ParseMany",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseMany"]], 
+  "InlineGuideFunction",ExpressionUUID->
+  "ce20b03c-0dd4-4f63-9718-197419d30247"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseMany1",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseMany1"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"67009166-49da-40b1-876d-8e30e2d54208",ExpressionUUID->
+  "19e9a827-1971-4c06-a13c-d1aa58a7c4bb"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseChainLeft",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseChainLeft"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"4912d2ae-ae7f-42e5-964a-c4cc96576bd5",ExpressionUUID->
+  "e3794cf4-0490-493c-8ae9-0671ab8d1b43"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseChain1Left",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseChain1Left"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"bbf49735-7a01-4ea9-a7ca-5e85e9b2dc3e",ExpressionUUID->
+  "85fd69d1-fdb5-41a1-9017-d1b3ad8e6e75"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseChainRight",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseChainRight"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"4c096116-8925-4727-8741-8707f1d99bcc",ExpressionUUID->
+  "04da0de6-9785-461a-98d6-70c001841f66"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseListOf",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseListOf"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"d5846dee-4956-4412-9e5d-cf95f74d86b1",ExpressionUUID->
+  "9648812c-ab10-404b-8d85-990683edbfca"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseChoice",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseChoice"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"9bae6df1-6cfe-4be1-84b4-311ad70dfe8c",ExpressionUUID->
+  "72e7ad79-9b7d-490e-bf44-01117310b426"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseManyByBranching",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/ParseManyByBranching"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"5203d31b-561d-42c1-b1cb-b700e09360f9",ExpressionUUID->
+  "6162a0d5-3405-460c-adf8-732b9bdd6dec"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParsePack",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParsePack"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"79a8ecb6-5ac6-4fe8-8508-21c96534a5c2",ExpressionUUID->
+  "61b0466e-4654-47de-9825-22db830b552d"],
+ Cell[BoxData[
+  RowBox[{
+  Cell[TextData[StyleBox[
+   " \[FilledVerySmallSquare] ", "InlineSeparator"]],ExpressionUUID->
+    "df32b468-7086-4864-8330-099662871087"], 
+   DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
+    "a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b", 
+     "6b18381c-3869-450d-9c9a-2cbf5c5729d0"], $CellContext`cellobj$$ = 
+    CellObject[
+    "7cda04c5-bf36-4296-a064-b893fb359062", 
+     "b679f4e5-140e-4e53-9425-08e108a751c6"]}, 
+    TemplateBox[{
+      GraphicsBox[{{
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         CircleBox[{0, 0}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{0, 0.62}, {0, -0.62}}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{-0.62, 0}, {0.62, 0}}]}}, 
+       ImagePadding -> {{1., 1.}, {2.4, 1.}}, ImageSize -> 16, 
+       PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}}, 
+       BaselinePosition -> (Center -> 
+        Center)], $CellContext`nbobj$$, $CellContext`cellobj$$},
+     "InlineListingAddButton"],
+    Initialization:>($CellContext`nbobj$$ = 
+      EvaluationNotebook[]; $CellContext`cellobj$$ = EvaluationCell[])]}]], 
+  "InlineListingAddButton",ExpressionUUID->
+  "7cda04c5-bf36-4296-a064-b893fb359062"]
+}], "InlineGuideFunctionListing",
+ CellChangeTimes->{{3.89139905591114*^9, 3.891399109586232*^9}, {
+  3.891399146960721*^9, 3.891399148162331*^9}, {3.891399235948563*^9, 
+  3.891399305670019*^9}, {3.891399593167012*^9, 3.891399599529146*^9}, {
+  3.8914005083943567`*^9, 3.891400542544937*^9}},
+ CellID->480634399,ExpressionUUID->"589e810d-9ba2-418e-a1a6-1388866b6eb0"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Parser transformers", "GuideFunctionsSubsection",
+ CellChangeTimes->{{3.891398667629816*^9, 3.891398674210844*^9}},
+ CellID->736848280,ExpressionUUID->"35c9edf2-ad59-4445-82d1-efc47321dea3"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  ButtonBox["ParseJust",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseJust"]], 
+  "InlineGuideFunction",ExpressionUUID->
+  "b13b3bbe-0cf3-49fa-86e7-819297c71c17"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseShortest",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseShortest"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"22dd1eff-5e19-48db-9055-2d2a9f834ec6",ExpressionUUID->
+  "ef64a5ad-0d95-4de3-b903-4210bf264702"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseSome",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseSome"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"74dc71e4-39e6-4c5c-b099-da1304696996",ExpressionUUID->
+  "f5b2f2f8-24f5-4a3f-b00a-c05d18613ae0"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseSpaces",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseSpaces"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"6e8ecde0-b47c-4145-8d2f-fffd2792b827",ExpressionUUID->
+  "bf684916-8203-413c-a779-16c8a0ae7f40"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseApply",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseApply"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"9685e24b-c18a-4fc0-806d-5da27c4da54f",ExpressionUUID->
+  "38db28f4-1427-465e-bdef-f112b458f14f"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["SetParserModifier",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/SetParserModifier"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"b5fc1f87-e6b6-4f5f-9850-90918984cf1c",ExpressionUUID->
+  "5ab71113-17a6-4888-9a2d-f284d3b53e11"],
+ Cell[BoxData[
+  RowBox[{
+  Cell[TextData[StyleBox[
+   " \[FilledVerySmallSquare] ", "InlineSeparator"]],ExpressionUUID->
+    "f83de3e5-dbfc-41db-8417-3b2ca714f47d"], 
+   DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
+    "a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b", 
+     "6b18381c-3869-450d-9c9a-2cbf5c5729d0"], $CellContext`cellobj$$ = 
+    CellObject[
+    "7f0583d4-2cf2-4d04-9d88-72b88c9df5ef", 
+     "27e1b92e-78c5-47fd-828e-7686cb3e2a48"]}, 
+    TemplateBox[{
+      GraphicsBox[{{
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         CircleBox[{0, 0}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{0, 0.62}, {0, -0.62}}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{-0.62, 0}, {0.62, 0}}]}}, 
+       ImagePadding -> {{1., 1.}, {2.4, 1.}}, ImageSize -> 16, 
+       PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}}, 
+       BaselinePosition -> (Center -> 
+        Center)], $CellContext`nbobj$$, $CellContext`cellobj$$},
+     "InlineListingAddButton"],
+    Initialization:>($CellContext`nbobj$$ = 
+      EvaluationNotebook[]; $CellContext`cellobj$$ = EvaluationCell[])]}]], 
+  "InlineListingAddButton",ExpressionUUID->
+  "7f0583d4-2cf2-4d04-9d88-72b88c9df5ef"]
+}], "InlineGuideFunctionListing",
+ CellChangeTimes->{{3.89139955342416*^9, 3.891399565901424*^9}, {
+  3.89139976120996*^9, 3.8913997612275257`*^9}, {3.8913998148045464`*^9, 
+  3.89139981800882*^9}, {3.891399862622064*^9, 3.89139989712449*^9}, {
+  3.891399938473255*^9, 3.891399945522572*^9}, {3.891400551096336*^9, 
+  3.8914005675234413`*^9}},
+ CellID->887285481,ExpressionUUID->"c4db48ff-95df-43fd-82c8-76c716b1fe93"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Matching parentheses", "GuideFunctionsSubsection",
+ CellChangeTimes->{{3.891399683402664*^9, 3.891399693909513*^9}},
+ CellID->315613515,ExpressionUUID->"0c162264-ad86-4e29-9d40-ddb397410fd3"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  ButtonBox["ParseBracketed",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseBracketed"]], 
+  "InlineGuideFunction",ExpressionUUID->
+  "7470c045-96c2-4c9b-9852-40e61a176171"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseCurlyBracketed",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/ParseCurlyBracketed"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"36047d1d-80c0-4488-a7f1-7112ddc25121",ExpressionUUID->
+  "e3b0e1d5-927b-4d80-a52d-39aa93ce3980"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseParenthesized",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/ParseParenthesized"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"10c41c4e-b131-4a2c-ab24-38756662cff0",ExpressionUUID->
+  "6dcb1468-6790-4f1e-8456-b1e8955c598c"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParsePack",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParsePack"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"6692dabf-6133-4408-b139-1656cb2459e4",ExpressionUUID->
+  "80fe0d79-315b-4e29-a27e-cfca39a8df9c"],
+ Cell[BoxData[
+  RowBox[{
+  Cell[TextData[StyleBox[
+   " \[FilledVerySmallSquare] ", "InlineSeparator"]],ExpressionUUID->
+    "146bcead-88ca-48a6-a843-1b963cb39f4a"], 
+   DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
+    "a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b", 
+     "6b18381c-3869-450d-9c9a-2cbf5c5729d0"], $CellContext`cellobj$$ = 
+    CellObject[
+    "459f99b1-38e5-42c1-93a0-da6c5d20a318", 
+     "4f33db57-a566-4536-9c02-aec88cab1cbf"]}, 
+    TemplateBox[{
+      GraphicsBox[{{
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         CircleBox[{0, 0}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{0, 0.62}, {0, -0.62}}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{-0.62, 0}, {0.62, 0}}]}}, 
+       ImagePadding -> {{1., 1.}, {2.4, 1.}}, ImageSize -> 16, 
+       PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}}, 
+       BaselinePosition -> (Center -> 
+        Center)], $CellContext`nbobj$$, $CellContext`cellobj$$},
+     "InlineListingAddButton"],
+    Initialization:>($CellContext`nbobj$$ = 
+      EvaluationNotebook[]; $CellContext`cellobj$$ = EvaluationCell[])]}]], 
+  "InlineListingAddButton",ExpressionUUID->
+  "459f99b1-38e5-42c1-93a0-da6c5d20a318"]
+}], "InlineGuideFunctionListing",
+ CellChangeTimes->{{3.891399699930957*^9, 3.8913997429863462`*^9}, {
+  3.891400073285317*^9, 3.8914000786467943`*^9}, {3.891400570714225*^9, 
+  3.8914005808407373`*^9}},
+ CellID->1850762940,ExpressionUUID->"e371b973-ab71-4e80-a0bc-c81199137755"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Optional parsing", "GuideFunctionsSubsection",
+ CellChangeTimes->{{3.8913987060822287`*^9, 3.8913987123275642`*^9}},
+ CellID->1006494099,ExpressionUUID->"8eda83b5-4c6d-400f-8377-6461d3fcc50a"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  ButtonBox["ParseOption",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseOption"]], 
+  "InlineGuideFunction",ExpressionUUID->
+  "788f2d91-d367-47ff-a321-1bb23f29746b"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseOption1",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseOption1"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"127aee9b-62b4-45fd-8c97-1282b01194df",ExpressionUUID->
+  "01093e15-5464-4284-b373-1e688266927e"],
+ Cell[BoxData[
+  RowBox[{
+  Cell[TextData[StyleBox[
+   " \[FilledVerySmallSquare] ", "InlineSeparator"]],ExpressionUUID->
+    "103381b2-9a5e-40b3-8e40-af6395c6b2e1"], 
+   DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
+    "a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b", 
+     "6b18381c-3869-450d-9c9a-2cbf5c5729d0"], $CellContext`cellobj$$ = 
+    CellObject[
+    "f224f9f6-1a76-4c03-935c-6acf98a69d4e", 
+     "1eabc4c8-dab0-44ca-95f5-d54c8f9eeb10"]}, 
+    TemplateBox[{
+      GraphicsBox[{{
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         CircleBox[{0, 0}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{0, 0.62}, {0, -0.62}}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{-0.62, 0}, {0.62, 0}}]}}, 
+       ImagePadding -> {{1., 1.}, {2.4, 1.}}, ImageSize -> 16, 
+       PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}}, 
+       BaselinePosition -> (Center -> 
+        Center)], $CellContext`nbobj$$, $CellContext`cellobj$$},
+     "InlineListingAddButton"],
+    Initialization:>($CellContext`nbobj$$ = 
+      EvaluationNotebook[]; $CellContext`cellobj$$ = EvaluationCell[])]}]], 
+  "InlineListingAddButton",ExpressionUUID->
+  "f224f9f6-1a76-4c03-935c-6acf98a69d4e"]
+}], "InlineGuideFunctionListing",
+ CellChangeTimes->{{3.891399480050466*^9, 3.891399493908777*^9}, {
+  3.891399976551155*^9, 3.8913999799005136`*^9}, {3.8914005841238728`*^9, 
+  3.891400587231823*^9}},
+ CellID->198311125,ExpressionUUID->"42566e86-234c-4664-82d0-b2e0c2913dac"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Tokenization", "GuideFunctionsSubsection",
+ CellChangeTimes->{{3.891398867990779*^9, 3.8913988786102877`*^9}},
+ CellID->963185787,ExpressionUUID->"2aa5e011-4164-4265-a303-d09b607b4003"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  ButtonBox["ParseToEBNFTokens",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/ParseToEBNFTokens"]], 
+  "InlineGuideFunction",ExpressionUUID->
+  "ed051c92-63d1-470e-bdb7-defb5ddbb312"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseToTokens",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseToTokens"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"a3bea4ae-1617-42b6-b04e-db4463e7e33e",ExpressionUUID->
+  "55d2328e-557d-4f3b-80b9-6dce558137f2"],
+ Cell[BoxData[
+  RowBox[{
+  Cell[TextData[StyleBox[
+   " \[FilledVerySmallSquare] ", "InlineSeparator"]],ExpressionUUID->
+    "2f8d973e-e0e8-4dff-b57e-1dc558d5d1e9"], 
+   DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
+    "a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b", 
+     "6b18381c-3869-450d-9c9a-2cbf5c5729d0"], $CellContext`cellobj$$ = 
+    CellObject[
+    "3cee1896-a89c-4d06-a123-a25a4e96369b", 
+     "0ddd464b-7c62-4d90-bf71-9d53ad403f93"]}, 
+    TemplateBox[{
+      GraphicsBox[{{
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         CircleBox[{0, 0}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{0, 0.62}, {0, -0.62}}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{-0.62, 0}, {0.62, 0}}]}}, 
+       ImagePadding -> {{1., 1.}, {2.4, 1.}}, ImageSize -> 16, 
+       PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}}, 
+       BaselinePosition -> (Center -> 
+        Center)], $CellContext`nbobj$$, $CellContext`cellobj$$},
+     "InlineListingAddButton"],
+    Initialization:>($CellContext`nbobj$$ = 
+      EvaluationNotebook[]; $CellContext`cellobj$$ = EvaluationCell[])]}]], 
+  "InlineListingAddButton",ExpressionUUID->
+  "3cee1896-a89c-4d06-a123-a25a4e96369b"]
+}], "InlineGuideFunctionListing",
+ CellChangeTimes->{{3.891399318301559*^9, 3.891399332195413*^9}, {
+  3.891399997564579*^9, 3.891400017857396*^9}, {3.89140059056151*^9, 
+  3.89140059388879*^9}},
+ CellID->320310673,ExpressionUUID->"2a3e5944-64ff-4860-a52b-daddfce91f59"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Parser generation", "GuideFunctionsSubsection",
+ CellChangeTimes->{{3.8913987342309647`*^9, 3.89139873894267*^9}},
+ CellID->1670743850,ExpressionUUID->"77ba897b-c037-4bf3-a432-eec3c375879d"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  ButtonBox["GenerateParsersFromEBNF",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/GenerateParsersFromEBNF"]], 
+  "InlineGuideFunction",ExpressionUUID->
+  "addf37de-e9b3-403e-b4b8-caab67ab0b71"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParseEBNF",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParseEBNF"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"76515db4-00ef-4091-9bb2-230a5ea6f4ab",ExpressionUUID->
+  "e2c0afb1-7a70-4710-af53-c5c414d5a8ab"],
+ Cell[BoxData[
+  RowBox[{
+  Cell[TextData[StyleBox[
+   " \[FilledVerySmallSquare] ", "InlineSeparator"]],ExpressionUUID->
+    "fcad43be-433c-41ab-a0ce-5f5368dabe3a"], 
+   DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
+    "a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b", 
+     "6b18381c-3869-450d-9c9a-2cbf5c5729d0"], $CellContext`cellobj$$ = 
+    CellObject[
+    "56c3e745-49f2-40dd-b121-60bd6cbb03f5", 
+     "b98ce0ef-4a24-4cc0-8f01-efa829f4af7d"]}, 
+    TemplateBox[{
+      GraphicsBox[{{
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         CircleBox[{0, 0}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{0, 0.62}, {0, -0.62}}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{-0.62, 0}, {0.62, 0}}]}}, 
+       ImagePadding -> {{1., 1.}, {2.4, 1.}}, ImageSize -> 16, 
+       PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}}, 
+       BaselinePosition -> (Center -> 
+        Center)], $CellContext`nbobj$$, $CellContext`cellobj$$},
+     "InlineListingAddButton"],
+    Initialization:>($CellContext`nbobj$$ = 
+      EvaluationNotebook[]; $CellContext`cellobj$$ = EvaluationCell[])]}]], 
+  "InlineListingAddButton",ExpressionUUID->
+  "56c3e745-49f2-40dd-b121-60bd6cbb03f5"]
+}], "InlineGuideFunctionListing",
+ CellChangeTimes->{{3.891398903679677*^9, 3.8913989036797123`*^9}, {
+  3.89139933489076*^9, 3.891399344559799*^9}, {3.8914005965002203`*^9, 
+  3.891400599447482*^9}},
+ CellID->1867461729,ExpressionUUID->"f34294fd-a315-4d4d-8a70-15d604aba3fb"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Inspection", "GuideFunctionsSubsection",
+ CellChangeTimes->{{3.8913993620160418`*^9, 3.891399364760591*^9}, {
+  3.891399395314765*^9, 3.891399404731723*^9}},
+ CellID->380838246,ExpressionUUID->"84cb5c82-3bf7-49f4-bd2a-7411257ad62c"],
+
+Cell[TextData[{
+ Cell[BoxData[
+  ButtonBox["GrammarNormalize",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/GrammarNormalize"]],
+   "InlineGuideFunction",ExpressionUUID->
+  "65244e95-4267-4964-94d7-2c1d95068a43"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["GrammarRandomSentences",
+   BaseStyle->"Link",
+   ButtonData->
+    "paclet:AntonAntonov/FunctionalParsers/ref/GrammarRandomSentences"]], 
+  "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"c64db019-b36f-450b-8fd4-f95afb742b99",ExpressionUUID->
+  "b006e1e3-1ffa-4b45-904a-106fc6d53988"],
+ StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+ Cell[BoxData[
+  ButtonBox["ParsingTestTable",
+   BaseStyle->"Link",
+   ButtonData->"paclet:AntonAntonov/FunctionalParsers/ref/ParsingTestTable"]],
+   "InlineGuideFunction",
+  TaggingRules->{"PageType" -> "Function"},
+  CellTags->"b6f86b52-25eb-4849-971c-3df92b441145",ExpressionUUID->
+  "12884305-99da-4ee6-bb4c-65c6eecce688"],
+ Cell[BoxData[
+  RowBox[{
+  Cell[TextData[StyleBox[
+   " \[FilledVerySmallSquare] ", "InlineSeparator"]],ExpressionUUID->
+    "0c83f69d-11cf-48d8-815f-419ffb010f85"], 
+   DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
+    "a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b", 
+     "6b18381c-3869-450d-9c9a-2cbf5c5729d0"], $CellContext`cellobj$$ = 
+    CellObject[
+    "1d870c2a-014a-4ffa-a926-c435a863cbad", 
+     "9181cef8-6462-499c-8bf7-c10b32c3a9dd"]}, 
+    TemplateBox[{
+      GraphicsBox[{{
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         CircleBox[{0, 0}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{0, 0.62}, {0, -0.62}}]}, {
+         Thickness[0.06], 
+         StrokeForm[
+          Hue[0.4167, 0.406, 0.502]], 
+         LineBox[{{-0.62, 0}, {0.62, 0}}]}}, 
+       ImagePadding -> {{1., 1.}, {2.4, 1.}}, ImageSize -> 16, 
+       PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}}, 
+       BaselinePosition -> (Center -> 
+        Center)], $CellContext`nbobj$$, $CellContext`cellobj$$},
+     "InlineListingAddButton"],
+    Initialization:>($CellContext`nbobj$$ = 
+      EvaluationNotebook[]; $CellContext`cellobj$$ = EvaluationCell[])]}]], 
+  "InlineListingAddButton",ExpressionUUID->
+  "1d870c2a-014a-4ffa-a926-c435a863cbad"]
+}], "InlineGuideFunctionListing",
+ CellChangeTimes->{{3.89139942495155*^9, 3.8913994412630167`*^9}, {
+  3.891400041552793*^9, 3.8914000593481903`*^9}, {3.891400602393497*^9, 
+  3.8914006105083513`*^9}},
+ CellID->1161020636,ExpressionUUID->"6921735b-a9cb-46e8-8958-59371d360822"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Tech Notes", "GuideTutorialsSection",
+ CellID->1886677291,ExpressionUUID->"8e4c69c5-1900-4b6e-bfb6-34ed10e576b9"],
+
+Cell["XXXX", "GuideTutorial",
+ CellID->1789181882,ExpressionUUID->"0b465c29-dae6-4b3d-b1b2-df09cd134934"],
+
+Cell["XXXX", "GuideTutorial",
+ CellID->1713865480,ExpressionUUID->"9d81e330-8b14-4e8b-a23b-ea100a6b2cc4"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Guides", "GuideMoreAboutSection",
+ CellChangeTimes->{{3.8430423939366693`*^9, 3.843042395176153*^9}},
+ CellID->738965149,ExpressionUUID->"645795cf-f257-45ae-8a47-888c893cdc21"],
+
+Cell["XXXX", "GuideMoreAbout",
+ CellID->889328642,ExpressionUUID->"b539b5a6-5c37-43f9-a4ac-294c15dce797"],
+
+Cell["XXXX", "GuideMoreAbout",
+ CellID->460302974,ExpressionUUID->"7c11c442-9397-404e-aba9-b75e96e7b422"]
+}, Open  ]],
+
+Cell["Related Links", "GuideRelatedLinksSection",
+ CellID->1075987524,ExpressionUUID->"88206b4a-388a-472f-ac9b-ef58cd816472"],
+
+Cell[CellGroupData[{
+
+Cell["Metadata", "MetadataSection",
+ CellID->162524481,ExpressionUUID->"1a22c753-abb1-4362-a539-d0f92a2b11ab"],
+
+Cell[TextData[{
+ "New in: ",
+ Cell["1.0.0", "HistoryData",
+  CellTags->"New",ExpressionUUID->"f13d456a-7753-4dfc-a18e-c087ed5fa9ae"],
+ " | Modified in: ",
+ Cell[" ", "HistoryData",
+  CellTags->"Modified",ExpressionUUID->"0c8199ad-721f-46fd-baa5-e12d23c8e7b7"],
+ " | Obsolete in: ",
+ Cell[" ", "HistoryData",
+  CellTags->"Obsolete",ExpressionUUID->
+  "a8d1afd3-37cc-4175-925a-8b8c5a83c840"]
+}], "History",
+ CellChangeTimes->{{3.891398804183062*^9, 3.891398807601261*^9}},
+ CellID->2097236830,ExpressionUUID->"2d3c7bfb-2c6c-4661-92a4-a8aa59d5268c"],
+
+Cell[CellGroupData[{
+
+Cell["Categorization", "CategorizationSection",
+ CellID->1610303599,ExpressionUUID->"41ec6ef1-53b9-473e-a527-bb541919e7b1"],
+
+Cell["Guide", "Categorization",
+ CellLabel->"Entity Type",
+ CellID->1783668899,ExpressionUUID->"30282f49-711d-4da9-a132-2e434a75260c"],
+
+Cell["AntonAntonov/FunctionalParsers", "Categorization",
+ CellLabel->"Paclet Name",
+ CellID->1398957020,ExpressionUUID->"9e5ffb46-e615-49c2-bbba-cbfcfc8a8062"],
+
+Cell["AntonAntonov`FunctionalParsers`", "Categorization",
+ CellLabel->"Context",
+ CellID->1619667784,ExpressionUUID->"5ee36ee2-fdb3-4d27-828c-bd7017deaeaf"],
+
+Cell["AntonAntonov/FunctionalParsers/guide/Functionalparsers", \
+"Categorization",
+ CellLabel->"URI",
+ CellID->253736316,ExpressionUUID->"8aa83e1b-445b-49d2-8270-26c304054aad"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Keywords", "KeywordsSection",
+ CellID->1791223717,ExpressionUUID->"a17ab239-258d-4cea-8111-884fe5fa450c"],
+
+Cell["\<\
+Parser, Parser combinator, Parser transformer, Parser generation\
+\>", "Keywords",
+ CellChangeTimes->{{3.891398812485673*^9, 3.89139883143869*^9}},
+ CellID->1671247973,ExpressionUUID->"0ed9a761-4a75-42ac-a448-a5c048eb22c3"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1244, 1031},
+WindowMargins->{{Automatic, 944}, {Automatic, 47}},
+TaggingRules-><|"Paclet" -> "AntonAntonov/FunctionalParsers"|>,
+FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+StyleDefinitions->FrontEnd`FileName[{"Wolfram"}, "GuidePageStylesExt.nb", 
+  CharacterEncoding -> "UTF-8"],
+ExpressionUUID->"a9bd08b8-f318-4f1c-8a6c-9b7c9b59657b"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 115, 1, 88, "GuideTitle",ExpressionUUID->"04fa29f5-31bc-4e5c-955b-90ad7d98c327",
+ CellID->668608619],
+Cell[698, 25, 388, 7, 47, "GuideAbstract",ExpressionUUID->"336ccba4-9ce2-4a61-b43e-fc64882ba10c",
+ CellID->1670618429],
+Cell[1089, 34, 260, 5, 29, "GuideAbstract",ExpressionUUID->"858243e7-307d-462e-b589-5b778f016433",
+ CellID->1225029763]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1386, 44, 109, 1, 72, "GuideFunctionsSection",ExpressionUUID->"5ac9113b-e7f3-4751-b903-091b804a8d97",
+ CellID->1882735325],
+Cell[CellGroupData[{
+Cell[1520, 49, 196, 2, 37, "GuideFunctionsSubsection",ExpressionUUID->"a66f655d-3f5d-4515-94d5-b60466b373fe",
+ CellID->1746551114],
+Cell[1719, 53, 3739, 89, 48, "InlineGuideFunctionListing",ExpressionUUID->"75ab0658-790c-42da-9e8d-3279a15d4b4c",
+ CellID->576447691]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5495, 147, 196, 2, 37, "GuideFunctionsSubsection",ExpressionUUID->"cef99f79-05f0-4b6b-a103-92d449d3c043",
+ CellID->1650680871],
+Cell[5694, 151, 3207, 76, 68, "InlineGuideFunctionListing",ExpressionUUID->"487912f7-0542-4146-97cd-bf0846c66e84",
+ CellID->1416141062]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8938, 232, 104, 1, 27, "GuideDelimiter",ExpressionUUID->"9b3bfa0f-7018-4c5c-924c-2e5f3a01c403",
+ CellID->1238565210],
+Cell[9045, 235, 5012, 119, 69, "InlineGuideFunctionListing",ExpressionUUID->"589e810d-9ba2-418e-a1a6-1388866b6eb0",
+ CellID->480634399]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14094, 359, 196, 2, 37, "GuideFunctionsSubsection",ExpressionUUID->"35c9edf2-ad59-4445-82d1-efc47321dea3",
+ CellID->736848280],
+Cell[14293, 363, 3901, 93, 48, "InlineGuideFunctionListing",ExpressionUUID->"c4db48ff-95df-43fd-82c8-76c716b1fe93",
+ CellID->887285481]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[18231, 461, 197, 2, 37, "GuideFunctionsSubsection",ExpressionUUID->"0c162264-ad86-4e29-9d40-ddb397410fd3",
+ CellID->315613515],
+Cell[18431, 465, 3035, 74, 47, "InlineGuideFunctionListing",ExpressionUUID->"e371b973-ab71-4e80-a0bc-c81199137755",
+ CellID->1850762940]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[21503, 544, 198, 2, 37, "GuideFunctionsSubsection",ExpressionUUID->"8eda83b5-4c6d-400f-8377-6461d3fcc50a",
+ CellID->1006494099],
+Cell[21704, 548, 2234, 54, 27, "InlineGuideFunctionListing",ExpressionUUID->"42566e86-234c-4664-82d0-b2e0c2913dac",
+ CellID->198311125]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[23975, 607, 191, 2, 37, "GuideFunctionsSubsection",ExpressionUUID->"2aa5e011-4164-4265-a303-d09b607b4003",
+ CellID->963185787],
+Cell[24169, 611, 2247, 55, 27, "InlineGuideFunctionListing",ExpressionUUID->"2a3e5944-64ff-4860-a52b-daddfce91f59",
+ CellID->320310673]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[26453, 671, 196, 2, 37, "GuideFunctionsSubsection",ExpressionUUID->"77ba897b-c037-4bf3-a432-eec3c375879d",
+ CellID->1670743850],
+Cell[26652, 675, 2257, 55, 27, "InlineGuideFunctionListing",ExpressionUUID->"f34294fd-a315-4d4d-8a70-15d604aba3fb",
+ CellID->1867461729]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[28946, 735, 238, 3, 37, "GuideFunctionsSubsection",ExpressionUUID->"84cb5c82-3bf7-49f4-bd2a-7411257ad62c",
+ CellID->380838246],
+Cell[29187, 740, 2660, 64, 47, "InlineGuideFunctionListing",ExpressionUUID->"6921735b-a9cb-46e8-8958-59371d360822",
+ CellID->1161020636]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[31896, 810, 119, 1, 74, "GuideTutorialsSection",ExpressionUUID->"8e4c69c5-1900-4b6e-bfb6-34ed10e576b9",
+ CellID->1886677291],
+Cell[32018, 813, 105, 1, 24, "GuideTutorial",ExpressionUUID->"0b465c29-dae6-4b3d-b1b2-df09cd134934",
+ CellID->1789181882],
+Cell[32126, 816, 105, 1, 24, "GuideTutorial",ExpressionUUID->"9d81e330-8b14-4e8b-a23b-ea100a6b2cc4",
+ CellID->1713865480]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[32268, 822, 190, 2, 74, "GuideMoreAboutSection",ExpressionUUID->"645795cf-f257-45ae-8a47-888c893cdc21",
+ CellID->738965149],
+Cell[32461, 826, 105, 1, 24, "GuideMoreAbout",ExpressionUUID->"b539b5a6-5c37-43f9-a4ac-294c15dce797",
+ CellID->889328642],
+Cell[32569, 829, 105, 1, 24, "GuideMoreAbout",ExpressionUUID->"7c11c442-9397-404e-aba9-b75e96e7b422",
+ CellID->460302974]
+}, Open  ]],
+Cell[32689, 833, 125, 1, 74, "GuideRelatedLinksSection",ExpressionUUID->"88206b4a-388a-472f-ac9b-ef58cd816472",
+ CellID->1075987524],
+Cell[CellGroupData[{
+Cell[32839, 838, 110, 1, 72, "MetadataSection",ExpressionUUID->"1a22c753-abb1-4362-a539-d0f92a2b11ab",
+ CellID->162524481],
+Cell[32952, 841, 546, 13, 26, "History",ExpressionUUID->"2d3c7bfb-2c6c-4661-92a4-a8aa59d5268c",
+ CellID->2097236830],
+Cell[CellGroupData[{
+Cell[33523, 858, 123, 1, 21, "CategorizationSection",ExpressionUUID->"41ec6ef1-53b9-473e-a527-bb541919e7b1",
+ CellID->1610303599],
+Cell[33649, 861, 134, 2, 70, "Categorization",ExpressionUUID->"30282f49-711d-4da9-a132-2e434a75260c",
+ CellID->1783668899],
+Cell[33786, 865, 159, 2, 70, "Categorization",ExpressionUUID->"9e5ffb46-e615-49c2-bbba-cbfcfc8a8062",
+ CellID->1398957020],
+Cell[33948, 869, 156, 2, 70, "Categorization",ExpressionUUID->"5ee36ee2-fdb3-4d27-828c-bd7017deaeaf",
+ CellID->1619667784],
+Cell[34107, 873, 176, 3, 70, "Categorization",ExpressionUUID->"8aa83e1b-445b-49d2-8270-26c304054aad",
+ CellID->253736316]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[34320, 881, 111, 1, 21, "KeywordsSection",ExpressionUUID->"a17ab239-258d-4cea-8111-884fe5fa450c",
+ CellID->1791223717],
+Cell[34434, 884, 233, 4, 21, "Keywords",ExpressionUUID->"0ed9a761-4a75-42ac-a448-a5c048eb22c3",
+ CellID->1671247973]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
