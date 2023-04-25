@@ -50,7 +50,7 @@ ParseMany1::usage = "ParseMany1[p] attempts to parse one or many times with p.";
 ParseMany::usage = "ParseMany[p] attempts to parse zero or many times with p.";
 ParseManyByBranching::usage = "ParseManyByBranching[p] parsing many times with p and following branches.";
 
-ParseListOf::usage = "ParseListOf[p_, sep_] parse a list of elements parsed by p and seprated by elements parsed by sep.";
+ParseListOf::usage = "ParseListOf[p_, sep_] parse a list of elements parsed by p and separated by elements parsed by sep.";
 
 ParseChainLeft::usage = "ParseChainLeft[p_, sep_] parse a nested application of the function with a name parsed by sep.";
 ParseChain1Left::usage = "ParseChain1Left[p_, sep_] parse a nested application of the function with a name parsed by sep.";
