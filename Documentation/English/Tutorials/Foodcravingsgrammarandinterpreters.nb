@@ -1,0 +1,1097 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     38715,       1089]
+NotebookOptionsPosition[     32850,        951]
+NotebookOutlinePosition[     33423,        970]
+CellTagsIndexPosition[     33380,        967]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Food cravings grammar and interpreters", "Title",
+ CellID->1184596069,ExpressionUUID->"116e97e4-690d-4ed5-9e8b-b7a441aa3bc9"],
+
+Cell[CellGroupData[{
+
+Cell["Introduction", "Section",
+ CellChangeTimes->{{3.8915905916028757`*^9, 3.8915905940490217`*^9}},
+ CellID->495036019,ExpressionUUID->"7170785a-c8c4-4cc1-8b32-2fd310abd5a3"],
+
+Cell["\<\
+In this notebook we show how to make a grammar for a simple Domain Specific \
+Language (DSL) that has sentences proclaiming food cravings and affinities.\
+\>", "Text",
+ CellChangeTimes->{{3.8915904848240356`*^9, 3.8915905513099937`*^9}, {
+  3.891591800543933*^9, 3.8915918025786467`*^9}},
+ CellID->460439756,ExpressionUUID->"07df7095-17e2-4efb-b6b8-2994e669b939"],
+
+Cell[CellGroupData[{
+
+Cell["Load the paclet", "MathCaption",
+ CellChangeTimes->{{3.89159055522466*^9, 3.891590560310294*^9}},
+ CellID->693313881,ExpressionUUID->"698a8255-e5e5-48fe-95ba-523033f44bed"],
+
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<AntonAntonov`FunctionalParsers`\>\"", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.891590563662608*^9, 3.8915905748124332`*^9}},
+ CellLabel->"In[11]:=",
+ CellID->280129345,ExpressionUUID->"22090a4e-7c7e-4e45-8fa7-b2836979678f"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Grammar", "Section",
+ CellChangeTimes->{{3.891590598415451*^9, 3.891590599370586*^9}},
+ CellID->1860628276,ExpressionUUID->"3d568990-d2d4-4dd4-b20b-f0d59501716e"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Here is an EBNF description of a Domain Specific Language (DSL) for food \
+cravings:\
+\>", "Text",
+ TaggingRules->{},
+ CellChangeTimes->{{3.891376755626524*^9, 3.891376796348885*^9}, {
+   3.891378507799821*^9, 3.89137851069438*^9}, 3.891378788401682*^9, {
+   3.891436433547909*^9, 3.8914364352342873`*^9}},
+ CellID->1374625137,ExpressionUUID->"737c7f96-13d4-4348-afed-a4c1ca4edf36"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "ebnfCode", "=", 
+   "\"\< \n<lovefood> = <subject> , <loveverb> , <object-spec> <@ \
+LoveFood[Flatten[#]]& ;  \n<loveverb> = ( 'love' | 'crave' | 'demand' ) <@ \
+LoveType ;  \n<object-spec> = ( <object-list> | <object> | <objects> | \
+<objects-mult> ) <@ LoveObjects[Flatten[{#}]]& ; \n<subject> = 'i' | 'we' | \
+'you' <@ Who ;  \n<object> = 'sushi' | [ 'a' ] , 'chocolate' | 'milk' | [ \
+'an' , 'ice' ] , 'cream' | 'a' , 'tangerine' ;  \n<objects> = 'sushi' | \
+'chocolates' | 'milks' | 'ice' , 'creams' | 'ice-creams' | 'tangerines' ;  \n\
+<objects-mult> = 'Range[2,100]' , <objects> <@ Mult ;  \n<object-list> = ( \
+<object> | <objects> | <objects-mult> ) , { 'and' &> ( <object> | <objects> | \
+<objects-mult> ) } ; \>\""}], ";"}]], "Input",
+ TaggingRules->{},
+ CellChangeTimes->{{3.8913767477792253`*^9, 3.891376747782607*^9}, 
+   3.8913767994336367`*^9, {3.8913771379348307`*^9, 3.89137717699578*^9}},
+ CellLabel->"In[12]:=",
+ CellID->1495817207,ExpressionUUID->"98e32c30-8166-41c4-b8d8-1553e909609e"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Generate parsers from the EBNF string:", "Text",
+ TaggingRules->{},
+ CellChangeTimes->{3.891376811815084*^9},
+ CellID->148706999,ExpressionUUID->"cca652fd-935c-4cc3-bc52-1cce5f8f4a29"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GenerateParsersFromEBNF", "[", 
+   RowBox[{"ParseToTokens", "@", "ebnfCode"}], "]"}], ";"}]], "Input",
+ TaggingRules->{},
+ CellChangeTimes->{{3.8913768172709084`*^9, 3.8913768172736588`*^9}},
+ CellLabel->"In[13]:=",
+ CellID->1795050732,ExpressionUUID->"9d734c21-7eed-4663-afd9-01656526d444"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ "Test the parser ",
+ Cell[BoxData[
+  StyleBox["pLOVEFOOD", "TI"]], "InlineFormula",ExpressionUUID->
+  "bf9d6658-5340-4c74-b741-5f5ecba0da59"],
+ " -- for the highest level rule \"<lovefood>\" -- with a list of sentences:"
+}], "Text",
+ TaggingRules->{},
+ CellChangeTimes->{{3.891376824741748*^9, 3.891376853220818*^9}, {
+  3.891378528143235*^9, 3.891378533016406*^9}},
+ CellID->1523189194,ExpressionUUID->"16c2bfb2-66a9-4dc3-8843-54569a03cbe2"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"sentences", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<I love milk\>\"", ",", "\"\<We demand 2 ice creams\>\"", ",", 
+     "\"\<I crave 2 ice creams and 5 chocolates\>\"", ",", 
+     "\"\<You crave chocolate and milk\>\""}], "}"}]}], ";", 
+  RowBox[{"ParsingTestTable", "[", 
+   RowBox[{"pLOVEFOOD", ",", 
+    RowBox[{"ToLowerCase", "@", "sentences"}], ",", 
+    RowBox[{"\"\<Layout\>\"", "->", "\"\<Vertical\>\""}]}], "]"}]}]], "Input",\
+
+ TaggingRules->{},
+ CellChangeTimes->{{3.891376848739662*^9, 3.891376848742469*^9}},
+ CellLabel->"In[14]:=",
+ CellID->1894541067,ExpressionUUID->"d9960d61-f002-4104-a59f-3ed275746402"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     StyleBox["1",
+      StripOnInput->False,
+      LineColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FrontFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      BackFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      GraphicsColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FontFamily->"Times",
+      FontSize->16,
+      FontColor->RGBColor[
+        Rational[2, 3], 0, 0]], 
+     StyleBox["\<\"command:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], "\<\"i love milk\"\>"},
+    {"\<\"\"\>", 
+     StyleBox["\<\"parsed:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"LoveFood", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Who", "[", "\<\"i\"\>", "]"}], ",", 
+        RowBox[{"LoveType", "[", "\<\"love\"\>", "]"}], ",", 
+        RowBox[{"LoveObjects", "[", 
+         RowBox[{"{", "\<\"milk\"\>", "}"}], "]"}]}], "}"}], "]"}]},
+    {"\<\"\"\>", 
+     StyleBox["\<\"residual:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"{", "}"}]},
+    {
+     StyleBox["2",
+      StripOnInput->False,
+      LineColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FrontFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      BackFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      GraphicsColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FontFamily->"Times",
+      FontSize->16,
+      FontColor->RGBColor[
+        Rational[2, 3], 0, 0]], 
+     StyleBox["\<\"command:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], "\<\"we demand 2 ice creams\"\>"},
+    {"\<\"\"\>", 
+     StyleBox["\<\"parsed:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"LoveFood", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Who", "[", "\<\"we\"\>", "]"}], ",", 
+        RowBox[{"LoveType", "[", "\<\"demand\"\>", "]"}], ",", 
+        RowBox[{"LoveObjects", "[", 
+         RowBox[{"{", 
+          RowBox[{"Mult", "[", 
+           RowBox[{"{", 
+            RowBox[{"2", ",", 
+             RowBox[{"{", 
+              RowBox[{"\<\"ice\"\>", ",", "\<\"creams\"\>"}], "}"}]}], "}"}], 
+           "]"}], "}"}], "]"}]}], "}"}], "]"}]},
+    {"\<\"\"\>", 
+     StyleBox["\<\"residual:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"{", "}"}]},
+    {
+     StyleBox["3",
+      StripOnInput->False,
+      LineColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FrontFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      BackFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      GraphicsColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FontFamily->"Times",
+      FontSize->16,
+      FontColor->RGBColor[
+        Rational[2, 3], 0, 0]], 
+     StyleBox["\<\"command:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[
+       0.5]], "\<\"i crave 2 ice creams and 5 chocolates\"\>"},
+    {"\<\"\"\>", 
+     StyleBox["\<\"parsed:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"LoveFood", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Who", "[", "\<\"i\"\>", "]"}], ",", 
+        RowBox[{"LoveType", "[", "\<\"crave\"\>", "]"}], ",", 
+        RowBox[{"LoveObjects", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Mult", "[", 
+            RowBox[{"{", 
+             RowBox[{"2", ",", 
+              RowBox[{"{", 
+               RowBox[{"\<\"ice\"\>", ",", "\<\"creams\"\>"}], "}"}]}], "}"}],
+             "]"}], ",", 
+           RowBox[{"Mult", "[", 
+            RowBox[{"{", 
+             RowBox[{"5", ",", "\<\"chocolates\"\>"}], "}"}], "]"}]}], "}"}], 
+         "]"}]}], "}"}], "]"}]},
+    {"\<\"\"\>", 
+     StyleBox["\<\"residual:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"{", "}"}]},
+    {
+     StyleBox["4",
+      StripOnInput->False,
+      LineColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FrontFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      BackFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      GraphicsColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FontFamily->"Times",
+      FontSize->16,
+      FontColor->RGBColor[
+        Rational[2, 3], 0, 0]], 
+     StyleBox["\<\"command:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], "\<\"you crave chocolate and milk\"\>"},
+    {"\<\"\"\>", 
+     StyleBox["\<\"parsed:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"LoveFood", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Who", "[", "\<\"you\"\>", "]"}], ",", 
+        RowBox[{"LoveType", "[", "\<\"crave\"\>", "]"}], ",", 
+        RowBox[{"LoveObjects", "[", 
+         RowBox[{"{", 
+          RowBox[{"\<\"chocolate\"\>", ",", "\<\"milk\"\>"}], "}"}], "]"}]}], 
+       "}"}], "]"}]},
+    {"\<\"\"\>", 
+     StyleBox["\<\"residual:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"{", "}"}]}
+   },
+   AutoDelete->False,
+   GridBoxAlignment->{"Columns" -> {Right, Right, Left}},
+   GridBoxDividers->{
+    "Columns" -> {True, True, False, True}, 
+     "Rows" -> {
+      True, False, False, True, False, False, True, False, False, True, False,
+        False, True, False, False, True, False, False, True, False, False, 
+       True, False, False, True, False, False, True, False, False, True, 
+       False, False, True, False, False, True}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+   GridBoxSpacings->{"Columns" -> {{0.5}}, "Rows" -> {{0.75}}}],
+  "Grid"]], "Output",
+ TaggingRules->{},
+ CellChangeTimes->{3.891376857680346*^9, 3.89139884902349*^9, 
+  3.891436474565102*^9, 3.891590682613549*^9},
+ CellLabel->"Out[14]=",
+ CellID->1960393559,ExpressionUUID->"7e4b7928-82ae-49f8-9f77-90992066ef19"]
+}, Open  ]]
+}, Open  ]],
+
+Cell["\<\
+Note the EBNF rule wrappers -- those are symbols specified at the ends of \
+some of the rules.\
+\>", "Text",
+ TaggingRules->{},
+ CellChangeTimes->{{3.891377108158371*^9, 3.891377111906678*^9}},
+ CellID->456480084,ExpressionUUID->"97a0d51f-691f-4f83-a371-92e22a5af76f"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Random sentences generation", "Section",
+ CellChangeTimes->{{3.891590639849699*^9, 3.891590644516725*^9}},
+ CellID->1210814627,ExpressionUUID->"7ea61226-00b5-4c50-bf70-58a94d3fcb52"],
+
+Cell[CellGroupData[{
+
+Cell["Generate random sentences from the grammar above:", "Text",
+ TaggingRules->{},
+ CellChangeTimes->{
+  3.891376874397606*^9, {3.891437494085011*^9, 3.8914374996257887`*^9}},
+ CellID->674186116,ExpressionUUID->"274a19a4-3c3a-4879-8396-0de290f1c91a"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SeedRandom", "[", "3", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GrammarRandomSentences", "[", 
+    RowBox[{
+     RowBox[{"GrammarNormalize", "[", "ebnfCode", "]"}], ",", "12"}], "]"}], "//",
+    "Sort"}], "//", "ColumnForm"}]}], "Input",
+ TaggingRules->{},
+ CellChangeTimes->{{3.891376883425428*^9, 3.891376908825225*^9}},
+ CellLabel->"In[15]:=",
+ CellID->95257831,ExpressionUUID->"69603647-208e-4ec8-b225-d06979331d56"],
+
+Cell[BoxData[
+ InterpretationBox[GridBox[{
+    {"\<\"i crave 59 milks\"\>"},
+    {"\<\"i demand 73 sushi and 43 tangerines and 77 ice creams and ice \
+creams and 32 sushi and tangerines\"\>"},
+    {"\<\"i demand sushi\"\>"},
+    {"\<\"we crave ice-creams and 53 sushi and milk and 9 milks and \
+sushi\"\>"},
+    {"\<\"we demand chocolates\"\>"},
+    {"\<\"we demand milks and 65 ice-creams and ice-creams\"\>"},
+    {"\<\"we love 14 ice-creams and tangerines and 47 milks\"\>"},
+    {"\<\"we love ice creams\"\>"},
+    {"\<\"we love milks and 31 ice creams and milks and cream\"\>"},
+    {"\<\"you demand milks\"\>"},
+    {"\<\"you love milk and 32 milks and a tangerine\"\>"},
+    {"\<\"you love tangerines\"\>"}
+   },
+   BaselinePosition->{Baseline, {1, 1}},
+   GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}}],
+  ColumnForm[{
+   "i crave 59 milks", 
+    "i demand 73 sushi and 43 tangerines and 77 ice creams and ice creams and \
+32 sushi and tangerines", "i demand sushi", 
+    "we crave ice-creams and 53 sushi and milk and 9 milks and sushi", 
+    "we demand chocolates", 
+    "we demand milks and 65 ice-creams and ice-creams", 
+    "we love 14 ice-creams and tangerines and 47 milks", "we love ice creams",
+     "we love milks and 31 ice creams and milks and cream", 
+    "you demand milks", "you love milk and 32 milks and a tangerine", 
+    "you love tangerines"}],
+  Editable->False]], "Output",
+ TaggingRules->{},
+ CellChangeTimes->{{3.891376886468563*^9, 3.891376909280891*^9}, 
+   3.891398849107429*^9, 3.8914364746429033`*^9, 3.8915906826938334`*^9},
+ CellLabel->"Out[16]=",
+ CellID->1640433839,ExpressionUUID->"3f4c7545-f525-44cc-a6db-a41cb32ba423"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Interpreters", "Section",
+ CellChangeTimes->{{3.891590669068563*^9, 3.891590670425288*^9}},
+ CellID->172442997,ExpressionUUID->"604e428b-7266-446f-bcbf-d4ffde0a276c"],
+
+Cell[TextData[{
+ "We can implement interpreters that tell calorie intake for proclaimed food \
+affinities and cravings. We can use ",
+ Cell[BoxData[
+  ButtonBox["WolframAlpha",
+   BaseStyle->"Link"]], "InlineFormula",ExpressionUUID->
+  "ce532d13-8324-404c-bfbd-dd365d3d261e"],
+ " to get the calories, but since using ",
+ Cell[BoxData[
+  ButtonBox["WolframAlpha",
+   BaseStyle->"Link"]], "InlineFormula",ExpressionUUID->
+  "bae68115-cd1c-40da-8d25-995a6e3f4cb8"],
+ " can be slow it is overridden inside ",
+ Cell[BoxData[
+  ButtonBox["Block",
+   BaseStyle->"Link"]], "InlineFormula",ExpressionUUID->
+  "8370c731-2354-4324-9f41-2da862a925c9"],
+ ":"
+}], "Text",
+ TaggingRules->{},
+ CellChangeTimes->{
+  3.891376926206884*^9, 3.8913770933944407`*^9, {3.891377214489778*^9, 
+   3.891377281169888*^9}, {3.8913787809588423`*^9, 3.891378782118582*^9}, {
+   3.8914375296811533`*^9, 3.89143759722163*^9}},
+ CellID->1201802313,ExpressionUUID->"79562908-e94a-4369-a49e-0a4b098f1322"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ "Interpreter for ",
+ Cell[BoxData[
+ "LoveObjects"], "InlineFormula",ExpressionUUID->
+  "5d396722-e4fa-4bff-b673-46aa8c43202f"]
+}], "MathCaption",
+ CellChangeTimes->{{3.8915907008803*^9, 3.891590738891737*^9}},
+ CellID->1669159325,ExpressionUUID->"65e3ebd9-8f4e-4558-a54f-1d5833ed4bf6"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Clear", "[", "LoveObjectsCalories", "]"}], ";", 
+  RowBox[{
+   RowBox[{"LoveObjectsCalories", "[", "parsed_", "]"}], ":=", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"res", ",", "wares", ",", 
+       RowBox[{"WolframAlpha", "=", 
+        RowBox[{
+         RowBox[{"{", "}"}], "&"}]}]}], "}"}], ",", 
+     RowBox[{
+      RowBox[{"res", "=", 
+       RowBox[{"(", 
+        RowBox[{"StringJoin", "@@", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{
+           RowBox[{"Riffle", "[", 
+            RowBox[{"parsed", ",", "\"\< and \>\""}], "]"}], "/.", 
+           RowBox[{
+            RowBox[{"Mult", "[", 
+             RowBox[{"{", 
+              RowBox[{"x_", ",", "y_"}], "}"}], "]"}], ":>", 
+            RowBox[{"(", 
+             RowBox[{"StringJoin", "@@", 
+              RowBox[{"Riffle", "[", 
+               RowBox[{
+                RowBox[{"Flatten", "[", 
+                 RowBox[{"{", 
+                  RowBox[{
+                   RowBox[{"ToString", "[", "x", "]"}], ",", "y"}], "}"}], 
+                 "]"}], ",", "\"\< \>\""}], "]"}]}], ")"}]}]}], "]"}]}], 
+        ")"}]}], ";", 
+      RowBox[{"wares", "=", 
+       RowBox[{"WolframAlpha", "[", 
+        RowBox[{
+         RowBox[{"res", "<>", "\"\< calories\>\""}], ",", "\"\<DataRules\>\"",
+          ",", 
+         RowBox[{"TimeConstraint", "->", "60"}]}], "]"}]}], ";", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"\"\<Result\>\"", ",", "1"}], "}"}], ",", 
+          "\"\<ComputableData\>\""}], "}"}], "/.", " ", "wares"}], "/.", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"\"\<Result\>\"", ",", "1"}], "}"}], ",", 
+          "\"\<ComputableData\>\""}], "}"}], "->", 
+        RowBox[{"Quantity", "[", 
+         RowBox[{
+          RowBox[{"RandomInteger", "[", 
+           RowBox[{"{", 
+            RowBox[{"20", ",", "1200"}], "}"}], "]"}], ",", 
+          "\"\<LargeCalories\>\""}], "]"}]}]}]}]}], "\[IndentingNewLine]", 
+    "]"}]}], ";"}]], "Input",
+ TaggingRules->{},
+ CellChangeTimes->{{3.891376992575008*^9, 3.891377003701145*^9}, {
+   3.89137703412045*^9, 3.891377054549139*^9}, 3.8913772469141903`*^9},
+ CellLabel->"In[17]:=",
+ CellID->651564364,ExpressionUUID->"e4b7f826-83e4-4ac3-a29b-824551c16590"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ "Interpreter for ",
+ Cell[BoxData[
+ "LoveFood"], "InlineFormula",ExpressionUUID->
+  "5e62e061-3cbd-439d-bf5d-9ae4c96ac079"]
+}], "MathCaption",
+ CellChangeTimes->{{3.8915907443142567`*^9, 3.8915907565767736`*^9}},
+ CellID->475954889,ExpressionUUID->"567ebf3b-dc93-46cb-b970-ed63de8bf31c"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", "LoveFoodCalories", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"LoveFoodCalories", "[", "parsed_", "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Block", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"who", ",", "type"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"who", "=", 
+       RowBox[{
+        RowBox[{"Cases", "[", 
+         RowBox[{"parsed", ",", 
+          RowBox[{
+           RowBox[{"Who", "[", "id_", "]"}], ":>", "id"}], ",", 
+          "\[Infinity]"}], "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"type", "=", 
+       RowBox[{
+        RowBox[{"Cases", "[", 
+         RowBox[{"parsed", ",", 
+          RowBox[{
+           RowBox[{"LoveType", "[", "id_", "]"}], ":>", "id"}], ",", 
+          "\[Infinity]"}], "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Which", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"who", "==", "\"\<you\>\""}], ",", 
+        RowBox[{"Row", "[", 
+         RowBox[{"{", "\"\<No, I do not. I am a machine.\>\"", "}"}], "]"}], 
+        ",", "\[IndentingNewLine]", 
+        RowBox[{"type", "==", "\"\<love\>\""}], ",", 
+        RowBox[{"Row", "[", 
+         RowBox[{"{", 
+          RowBox[{"\"\<you gain \>\"", ",", 
+           RowBox[{
+            RowBox[{"Sqrt", "[", 
+             RowBox[{"1", "*", "10."}], "]"}], " ", 
+            RowBox[{"parsed", "[", 
+             RowBox[{"[", 
+              RowBox[{"-", "1"}], "]"}], "]"}]}], ",", "\"\< per day\>\""}], 
+          "}"}], "]"}], ",", "\[IndentingNewLine]", "True", ",", 
+        RowBox[{"Row", "[", 
+         RowBox[{"{", 
+          RowBox[{"\"\<you will gain \>\"", ",", 
+           RowBox[{"parsed", "[", 
+            RowBox[{"[", 
+             RowBox[{"-", "1"}], "]"}], "]"}]}], "}"}], "]"}]}], 
+       "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]}], "Input",
+ TaggingRules->{},
+ CellChangeTimes->{{3.891376992575008*^9, 3.891376994876664*^9}, {
+  3.8913770379121037`*^9, 3.891377039678768*^9}, {3.891377286449065*^9, 
+  3.89137732684709*^9}},
+ CellLabel->"In[18]:=",
+ CellID->823149695,ExpressionUUID->"ba5fce79-092a-4473-bb5b-f0bac4f153a1"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ "Here the parsing tests are re-done by changing the definitions of the \
+wrapping symbols ",
+ Cell[BoxData[
+ "LoveFood"], "InlineFormula",ExpressionUUID->
+  "4bbbca40-c4e1-4940-9856-898cedb16529"],
+ " and ",
+ Cell[BoxData[
+ "LoveObjects"], "InlineFormula",ExpressionUUID->
+  "c8520244-8d13-4651-a28c-3f9587bee9c1"],
+ ":"
+}], "Text",
+ TaggingRules->{},
+ CellChangeTimes->{{3.8913773658913813`*^9, 3.891377387760261*^9}},
+ CellID->1970604984,ExpressionUUID->"fc1a8e39-5efd-47a7-861a-e71d19c0c790"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Block", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"LoveFood", "=", "LoveFoodCalories"}], ",", 
+     RowBox[{"LoveObjects", "=", "LoveObjectsCalories"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"ParsingTestTable", "[", 
+    RowBox[{"pLOVEFOOD", ",", 
+     RowBox[{"ToLowerCase", "@", "sentences"}], ",", 
+     RowBox[{"\"\<Layout\>\"", "->", "\"\<Vertical\>\""}]}], "]"}]}], 
+  "\[IndentingNewLine]", "]"}]], "Input",
+ TaggingRules->{},
+ CellChangeTimes->{{3.891377069160915*^9, 3.8913770691639423`*^9}, {
+  3.8913773557591543`*^9, 3.891377357862166*^9}},
+ CellLabel->"In[20]:=",
+ CellID->1205891116,ExpressionUUID->"27b7c8e0-1676-4b0a-a3d3-a00992608b3d"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     StyleBox["1",
+      StripOnInput->False,
+      LineColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FrontFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      BackFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      GraphicsColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FontFamily->"Times",
+      FontSize->16,
+      FontColor->RGBColor[
+        Rational[2, 3], 0, 0]], 
+     StyleBox["\<\"command:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], "\<\"i love milk\"\>"},
+    {"\<\"\"\>", 
+     StyleBox["\<\"parsed:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     TemplateBox[{"\"you gain \"", 
+       TemplateBox[{
+        "3469.0185932047125`", "\"Cal\"", "dietary Calories", 
+         "\"DietaryCalories\""}, "Quantity", SyntaxForm -> Mod], 
+       "\" per day\""},
+      "RowDefault"]},
+    {"\<\"\"\>", 
+     StyleBox["\<\"residual:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"{", "}"}]},
+    {
+     StyleBox["2",
+      StripOnInput->False,
+      LineColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FrontFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      BackFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      GraphicsColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FontFamily->"Times",
+      FontSize->16,
+      FontColor->RGBColor[
+        Rational[2, 3], 0, 0]], 
+     StyleBox["\<\"command:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], "\<\"we demand 2 ice creams\"\>"},
+    {"\<\"\"\>", 
+     StyleBox["\<\"parsed:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     TemplateBox[{"\"you will gain \"", 
+       TemplateBox[{
+        "469", "\"Cal\"", "dietary Calories", "\"DietaryCalories\""}, 
+        "Quantity", SyntaxForm -> Mod]},
+      "RowDefault"]},
+    {"\<\"\"\>", 
+     StyleBox["\<\"residual:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"{", "}"}]},
+    {
+     StyleBox["3",
+      StripOnInput->False,
+      LineColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FrontFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      BackFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      GraphicsColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FontFamily->"Times",
+      FontSize->16,
+      FontColor->RGBColor[
+        Rational[2, 3], 0, 0]], 
+     StyleBox["\<\"command:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[
+       0.5]], "\<\"i crave 2 ice creams and 5 chocolates\"\>"},
+    {"\<\"\"\>", 
+     StyleBox["\<\"parsed:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     TemplateBox[{"\"you will gain \"", 
+       TemplateBox[{
+        "1171", "\"Cal\"", "dietary Calories", "\"DietaryCalories\""}, 
+        "Quantity", SyntaxForm -> Mod]},
+      "RowDefault"]},
+    {"\<\"\"\>", 
+     StyleBox["\<\"residual:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"{", "}"}]},
+    {
+     StyleBox["4",
+      StripOnInput->False,
+      LineColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FrontFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      BackFaceColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      GraphicsColor->RGBColor[
+        Rational[2, 3], 0, 0],
+      FontFamily->"Times",
+      FontSize->16,
+      FontColor->RGBColor[
+        Rational[2, 3], 0, 0]], 
+     StyleBox["\<\"command:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], "\<\"you crave chocolate and milk\"\>"},
+    {"\<\"\"\>", 
+     StyleBox["\<\"parsed:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     TemplateBox[{"\"No, I do not. I am a machine.\""},
+      "RowDefault"]},
+    {"\<\"\"\>", 
+     StyleBox["\<\"residual:\"\>",
+      StripOnInput->False,
+      LineColor->GrayLevel[0.5],
+      FrontFaceColor->GrayLevel[0.5],
+      BackFaceColor->GrayLevel[0.5],
+      GraphicsColor->GrayLevel[0.5],
+      FontColor->GrayLevel[0.5]], 
+     RowBox[{"{", "}"}]}
+   },
+   AutoDelete->False,
+   GridBoxAlignment->{"Columns" -> {Right, Right, Left}},
+   GridBoxDividers->{
+    "Columns" -> {True, True, False, True}, 
+     "Rows" -> {
+      True, False, False, True, False, False, True, False, False, True, False,
+        False, True, False, False, True, False, False, True, False, False, 
+       True, False, False, True, False, False, True, False, False, True, 
+       False, False, True, False, False, True}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+   GridBoxSpacings->{"Columns" -> {{0.5}}, "Rows" -> {{0.75}}}],
+  "Grid"]], "Output",
+ TaggingRules->{},
+ CellChangeTimes->{3.891377070209387*^9, 3.891377346693202*^9, 
+  3.891398849145047*^9, 3.891436474681953*^9, 3.891590682727477*^9},
+ CellLabel->"Out[20]=",
+ CellID->1376471887,ExpressionUUID->"d8c45261-737b-4e25-9468-6f3ca7edfa53"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Guides", "TutorialMoreAboutSection",
+ CellChangeTimes->{{3.843042384656711*^9, 3.843042386024461*^9}},
+ CellID->934786587,ExpressionUUID->"4fcb8b67-85e8-4a73-8536-4e46aad59784"],
+
+Cell["XXXX", "TutorialMoreAbout",
+ CellID->2115289904,ExpressionUUID->"a0555587-5fda-4d7c-b2b7-4000e9c9b857"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Related Tech Notes", "RelatedTutorialsSection",
+ CellID->85640443,ExpressionUUID->"f3874d18-4e3f-4a81-ae6a-14340d131df5"],
+
+Cell[TextData[ButtonBox["Integer names parsing",
+ BaseStyle->"Link",
+ ButtonData->
+  "paclet:AntonAntonov/FunctionalParsers/tutorial/Integernamesparsing"]], \
+"RelatedTutorials",
+ CellChangeTimes->{{3.891590773839253*^9, 3.891590785311913*^9}},
+ CellID->544882011,ExpressionUUID->"422a092f-a0a0-459c-bd07-3d4e943c9ddf"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Metadata", "MetadataSection",
+ CellID->961688069,ExpressionUUID->"2263913c-171a-4941-8889-5fcd81e9e631"],
+
+Cell[TextData[{
+ "New in: ",
+ Cell["1.0.2", "HistoryData",
+  CellTags->"New",ExpressionUUID->"4b669ac9-aca5-450f-9abd-87a62869cf1f"],
+ " | Modified in: ",
+ Cell[" ", "HistoryData",
+  CellTags->"Modified",ExpressionUUID->"d4f7c03a-2780-43bb-87dd-868623c8e57a"],
+ " | Obsolete in: ",
+ Cell[" ", "HistoryData",
+  CellTags->"Obsolete",ExpressionUUID->
+  "db4834c4-0b1d-4d4e-8bfb-a267628a5493"]
+}], "History",
+ CellChangeTimes->{{3.891590792016613*^9, 3.8915907942675533`*^9}},
+ CellID->1129448361,ExpressionUUID->"64d085db-9c65-45b9-9049-15af39568135"],
+
+Cell[CellGroupData[{
+
+Cell["Categorization", "CategorizationSection",
+ CellID->1030647494,ExpressionUUID->"898da51f-abcf-4ebe-9b09-594158156183"],
+
+Cell["Tech Note", "Categorization",
+ CellLabel->"Entity Type",
+ CellID->489334956,ExpressionUUID->"7b787aa6-a1be-43cc-a2b3-cdd340036c5b"],
+
+Cell["AntonAntonov/FunctionalParsers", "Categorization",
+ CellLabel->"Paclet Name",
+ CellID->1537721129,ExpressionUUID->"06d151ab-1920-49b2-b696-56fcfc4cf1dc"],
+
+Cell["AntonAntonov`FunctionalParsers`", "Categorization",
+ CellLabel->"Context",
+ CellID->1660807105,ExpressionUUID->"5850e83e-4fb0-402d-83b5-21b7f35e4593"],
+
+Cell["\<\
+AntonAntonov/FunctionalParsers/tutorial/Foodcravingsgrammarandinterpreters\
+\>", "Categorization",
+ CellLabel->"URI",
+ CellID->192570029,ExpressionUUID->"7ff6dfb7-19ef-40e4-b745-fe29f57eb4b6"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Keywords", "KeywordsSection",
+ CellID->266621374,ExpressionUUID->"012e44d9-6e2f-4c4d-8451-561a43713cf2"],
+
+Cell["Food, grammar, parser, interpreter", "Keywords",
+ CellChangeTimes->{{3.891590797023178*^9, 3.891590805831807*^9}},
+ CellID->1454545176,ExpressionUUID->"390bb129-624d-45cd-b097-1370e1d6ded0"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1357, 1195},
+WindowMargins->{{Automatic, 767}, {Automatic, 10}},
+TaggingRules-><|"Paclet" -> "AntonAntonov/FunctionalParsers"|>,
+Magnification:>1.25 Inherited,
+FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+StyleDefinitions->FrontEnd`FileName[{"Wolfram"}, "TechNotePageStylesExt.nb", 
+  CharacterEncoding -> "UTF-8"],
+ExpressionUUID->"ed002eac-5cc7-414e-9d35-2110dfba73db"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 131, 1, 141, "Title",ExpressionUUID->"116e97e4-690d-4ed5-9e8b-b7a441aa3bc9",
+ CellID->1184596069],
+Cell[CellGroupData[{
+Cell[736, 27, 176, 2, 58, "Section",ExpressionUUID->"7170785a-c8c4-4cc1-8b32-2fd310abd5a3",
+ CellID->495036019],
+Cell[915, 31, 373, 6, 55, "Text",ExpressionUUID->"07df7095-17e2-4efb-b6b8-2994e669b939",
+ CellID->460439756],
+Cell[CellGroupData[{
+Cell[1313, 41, 178, 2, 47, "MathCaption",ExpressionUUID->"698a8255-e5e5-48fe-95ba-523033f44bed",
+ CellID->693313881],
+Cell[1494, 45, 266, 5, 33, "Input",ExpressionUUID->"22090a4e-7c7e-4e45-8fa7-b2836979678f",
+ CellID->280129345]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1809, 56, 168, 2, 58, "Section",ExpressionUUID->"3d568990-d2d4-4dd4-b20b-f0d59501716e",
+ CellID->1860628276],
+Cell[CellGroupData[{
+Cell[2002, 62, 392, 8, 31, "Text",ExpressionUUID->"737c7f96-13d4-4348-afed-a4c1ca4edf36",
+ CellID->1374625137],
+Cell[2397, 72, 1045, 18, 346, "Input",ExpressionUUID->"98e32c30-8166-41c4-b8d8-1553e909609e",
+ CellID->1495817207]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3479, 95, 190, 3, 31, "Text",ExpressionUUID->"cca652fd-935c-4cc3-bc52-1cce5f8f4a29",
+ CellID->148706999],
+Cell[3672, 100, 326, 7, 33, "Input",ExpressionUUID->"9d734c21-7eed-4663-afd9-01656526d444",
+ CellID->1795050732]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4035, 112, 459, 10, 32, "Text",ExpressionUUID->"16c2bfb2-66a9-4dc3-8843-54569a03cbe2",
+ CellID->1523189194],
+Cell[CellGroupData[{
+Cell[4519, 126, 661, 16, 82, "Input",ExpressionUUID->"d9960d61-f002-4104-a59f-3ed275746402",
+ CellID->1894541067],
+Cell[5183, 144, 7562, 223, 430, "Output",ExpressionUUID->"7e4b7928-82ae-49f8-9f77-90992066ef19",
+ CellID->1960393559]
+}, Open  ]]
+}, Open  ]],
+Cell[12772, 371, 278, 6, 31, "Text",ExpressionUUID->"97a0d51f-691f-4f83-a371-92e22a5af76f",
+ CellID->456480084]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13087, 382, 188, 2, 58, "Section",ExpressionUUID->"7ea61226-00b5-4c50-bf70-58a94d3fcb52",
+ CellID->1210814627],
+Cell[CellGroupData[{
+Cell[13300, 388, 252, 4, 31, "Text",ExpressionUUID->"274a19a4-3c3a-4879-8396-0de290f1c91a",
+ CellID->674186116],
+Cell[CellGroupData[{
+Cell[13577, 396, 486, 12, 82, "Input",ExpressionUUID->"69603647-208e-4ec8-b225-d06979331d56",
+ CellID->95257831],
+Cell[14066, 410, 1683, 35, 265, "Output",ExpressionUUID->"3f4c7545-f525-44cc-a6db-a41cb32ba423",
+ CellID->1640433839]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15810, 452, 172, 2, 58, "Section",ExpressionUUID->"604e428b-7266-446f-bcbf-d4ffde0a276c",
+ CellID->172442997],
+Cell[15985, 456, 970, 24, 86, "Text",ExpressionUUID->"79562908-e94a-4369-a49e-0a4b098f1322",
+ CellID->1201802313],
+Cell[CellGroupData[{
+Cell[16980, 484, 302, 7, 49, "MathCaption",ExpressionUUID->"65e3ebd9-8f4e-4558-a54f-1d5833ed4bf6",
+ CellID->1669159325],
+Cell[17285, 493, 2375, 64, 322, "Input",ExpressionUUID->"e4b7f826-83e4-4ac3-a29b-824551c16590",
+ CellID->651564364]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19697, 562, 304, 7, 54, "MathCaption",ExpressionUUID->"567ebf3b-dc93-46cb-b970-ed63de8bf31c",
+ CellID->475954889],
+Cell[20004, 571, 2307, 59, 274, "Input",ExpressionUUID->"ba5fce79-092a-4473-bb5b-f0bac4f153a1",
+ CellID->823149695]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[22348, 635, 512, 14, 61, "Text",ExpressionUUID->"fc1a8e39-5efd-47a7-861a-e71d19c0c790",
+ CellID->1970604984],
+Cell[CellGroupData[{
+Cell[22885, 653, 709, 17, 82, "Input",ExpressionUUID->"27b7c8e0-1676-4b0a-a3d3-a00992608b3d",
+ CellID->1205891116],
+Cell[23597, 672, 6505, 194, 358, "Output",ExpressionUUID->"d8c45261-737b-4e25-9468-6f3ca7edfa53",
+ CellID->1376471887]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30163, 873, 191, 2, 93, "TutorialMoreAboutSection",ExpressionUUID->"4fcb8b67-85e8-4a73-8536-4e46aad59784",
+ CellID->934786587],
+Cell[30357, 877, 109, 1, 30, "TutorialMoreAbout",ExpressionUUID->"a0555587-5fda-4d7c-b2b7-4000e9c9b857",
+ CellID->2115289904]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30503, 883, 127, 1, 93, "RelatedTutorialsSection",ExpressionUUID->"f3874d18-4e3f-4a81-ae6a-14340d131df5",
+ CellID->85640443],
+Cell[30633, 886, 319, 6, 30, "RelatedTutorials",ExpressionUUID->"422a092f-a0a0-459c-bd07-3d4e943c9ddf",
+ CellID->544882011]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[31001, 898, 110, 1, 90, "MetadataSection",ExpressionUUID->"2263913c-171a-4941-8889-5fcd81e9e631",
+ CellID->961688069],
+Cell[31114, 901, 548, 13, 33, "History",ExpressionUUID->"64d085db-9c65-45b9-9049-15af39568135",
+ CellID->1129448361],
+Cell[CellGroupData[{
+Cell[31687, 918, 123, 1, 27, "CategorizationSection",ExpressionUUID->"898da51f-abcf-4ebe-9b09-594158156183",
+ CellID->1030647494],
+Cell[31813, 921, 137, 2, 87, "Categorization",ExpressionUUID->"7b787aa6-a1be-43cc-a2b3-cdd340036c5b",
+ CellID->489334956],
+Cell[31953, 925, 159, 2, 87, "Categorization",ExpressionUUID->"06d151ab-1920-49b2-b696-56fcfc4cf1dc",
+ CellID->1537721129],
+Cell[32115, 929, 156, 2, 87, "Categorization",ExpressionUUID->"5850e83e-4fb0-402d-83b5-21b7f35e4593",
+ CellID->1660807105],
+Cell[32274, 933, 202, 4, 87, "Categorization",ExpressionUUID->"7ff6dfb7-19ef-40e4-b745-fe29f57eb4b6",
+ CellID->192570029]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[32513, 942, 110, 1, 26, "KeywordsSection",ExpressionUUID->"012e44d9-6e2f-4c4d-8451-561a43713cf2",
+ CellID->266621374],
+Cell[32626, 945, 196, 2, 26, "Keywords",ExpressionUUID->"390bb129-624d-45cd-b097-1370e1d6ded0",
+ CellID->1454545176]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
