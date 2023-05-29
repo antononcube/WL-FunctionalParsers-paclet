@@ -9,6 +9,7 @@
 BeginPackage["AntonAntonov`FunctionalParsers`"];
 
 ParseSymbol::usage = "ParseSymbol[s] parses a specified symbol s.";
+ParseFuzzySymbol::usage = "ParseFuzzySymbol[s, n] parses a specified symbol s if the edit distance with s is less or equal n.";
 ParseToken::usage = "ParseToken[t] parses the token t.";
 ParsePredicate::usage = "ParsePredicate[p] parses strings that give True for the predicate p.";
 ParseEpsilon::usage = "ParseEpsilon parses and empty string.";
@@ -110,6 +111,9 @@ Clear["Parse?*"];
 
 ParseSymbol[a_] :=
     Function[If[Length[#] > 0 && a === First[#], {{Rest[#], a}}, {}]];
+
+ParseFuzzySymbol[a_, n_Integer : 2] :=
+    Function[If[Length[#] > 0 && EditDistance[a, First[#]] <= n, {{Rest[#], a}}, {}]];
 
 ParseToken[k_][xs_] :=
     With[{n = Length[k]},

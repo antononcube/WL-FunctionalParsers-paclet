@@ -7,7 +7,7 @@ PacletObject[
     "Creator" -> "Anton Antonov",
     "License" -> "MIT",
     "PublisherID" -> "AntonAntonov",
-    "Version" -> "1.0.3",
+    "Version" -> "1.0.4",
     "WolframVersion" -> "12.0+",
     "Extensions" -> {
       {
@@ -48,6 +48,7 @@ PacletObject[
           "AntonAntonov`FunctionalParsers`ParseEBNF",
           "AntonAntonov`FunctionalParsers`ParseEpsilon",
           "AntonAntonov`FunctionalParsers`ParseFail",
+          "AntonAntonov`FunctionalParsers`ParseFuzzySymbol",
           "AntonAntonov`FunctionalParsers`ParseJust",
           "AntonAntonov`FunctionalParsers`ParseListOf",
           "AntonAntonov`FunctionalParsers`ParseMany",
