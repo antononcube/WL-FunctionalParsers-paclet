@@ -174,7 +174,7 @@ ParseSpaces[pArg_] :=
         NestWhile[Rest, #,
           Length[#] >
               0 && (First[#] == "" || First[#] == " " ||
-              First[#] == "\n") &]]]]
+              First[#] == "\n") &]]]];
 
 ParseJust[p_][xs_] := With[{res = p[xs]}, Select[res, First[#] === {} &]];
 
