@@ -310,7 +310,7 @@ ParseChainRight[p_, {separatorParser_, func_}] :=
 (* ParseRecursiveDefinition                                 *)
 (************************************************************)
 
-SetAttributes[ParseRecursiveDefinition, HoldAll]
+SetAttributes[ParseRecursiveDefinition, HoldAll];
 ParseRecursiveDefinition[parserName_Symbol, rhs__] :=
     Block[{},
       parserName[xs_] := rhs[xs]
@@ -367,7 +367,7 @@ ParseToEBNFTokens[text_, whitespaces_ : {" ", "\n", "\t"}] :=
 
 Clear[ParsingTestTable];
 
-ParsingTestTable::unval = "Unknown value `2` for the option `1`."
+ParsingTestTable::unval = "Unknown value `2` for the option `1`.";
 
 Options[ParsingTestTable] = {FontFamily -> "Times", FontSize -> 16, "Terminals" -> {}, "TokenizerFunction" -> ToTokens, "Layout" -> "Horizontal"};
 ParsingTestTable[parser_, statements : {_String ..}, optsArg : OptionsPattern[]] :=
